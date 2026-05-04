@@ -33,8 +33,8 @@ banner() {
     echo -e "${MATRIX_COLOR}"
     echo "  [+] ======================================== [+]"
     echo "  [+}                                          {+]"
-    echo "  [+]           PS-Phisher v3.2                [+]"
-    echo "  [+]         PeekSecurity Team                [+]"
+    echo "  [+]            PS-Phisher v3.2               [+]"
+    echo "  [+]          PeekSecurity Team               [+]"
     echo "  [+}                                          {+]"
     echo "  [+] ======================================== [+]${RESET}"
     echo
