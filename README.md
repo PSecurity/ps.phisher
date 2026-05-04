@@ -84,7 +84,7 @@ Menu Principal
 
 * Opção 1: Mostra seu próprio IP público + geolocalização (cidade, região, país).
 
-* Opção 2: Consulta qualquer IP externo (ex: 8.8.8.8) e retorna localização e ISP.
+* Opção 2: Consulta qualquer IP externo (ex: `8.8.8.8`) e retorna localização e ISP.
 
 📁 Estrutura de Diretórios
 
@@ -105,15 +105,15 @@ ps-phisher/
 
 ## 🧩 Adicionando Novos Templates
 
-1. Crie uma subpasta dentro de .sites/ com o nome do serviço.
+`1.` Crie uma subpasta dentro de `.sites/` com o nome do serviço.
 
-2. Dentro dela, coloque um arquivo index.html contendo o formulário de login falso.
+`2.` Dentro dela, coloque um arquivo `index.html` contendo o formulário de login falso.
 
-3. O formulário deve enviar os dados para post.php (ex: <form method="POST" action="post.php">).
+`3.` O formulário deve enviar os dados para post.php (ex: `<form method="POST" action="post.php">`).
 
-4. Para capturar IP, inclua a imagem invisível: <img src="ip.php" style="display:none;">
+`4.` Para capturar IP, inclua a imagem invisível: `<img src="ip.php" style="display:none;">`
 
-# Exemplo mínimo (`.sites/exemplo/index.html`):
+**Exemplo mínimo** (`.sites/exemplo/index.html`):
 
 ```
 html
