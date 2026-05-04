@@ -1,13 +1,10 @@
 #!/data/data/com.termux/files/usr/bin/bash
-
-# =====================================
-# PS.Thumbnails - PeekSecurity
-# Autor: Peek | @PeekSecurity
-# GitHub: https://psecurity.github.io/PSecurity
-# =====================================
-# Ferramenta Educacional para Laboratório de Pentest - Versão 3.0
-# Uso exclusivamente autorizado em ambientes controlados.
-# =====================================
+# ======================================================================
+#  PS-Phish - Ferramenta de Simulação de Phishing
+#  Autor: PeekSecurity Team
+#  Uso exclusivo em laboratórios autorizados.
+#  Versão: 3.0
+# ======================================================================
 
 # ----------------------------- CONFIGURAÇÕES ----------------------------
 HOST="127.0.0.1"
@@ -16,7 +13,6 @@ SITES_DIR=".sites"
 WWW_DIR=".server/www"
 SERVER_DIR=".server"
 CAPTURE_DIR=".server/captures"
-CONFIG_FILE=".config"
 LOG_FILE="$SERVER_DIR/ps-phish.log"
 
 # Cores neon / hacker
@@ -36,30 +32,32 @@ NEON_GREEN="\033[38;2;0;255;128m"
 NEON_BLUE="\033[38;2;0;255;255m"
 NEON_PURPLE="\033[38;2;255;0;255m"
 ORANGE="\033[38;2;255;165;0m"
+PEEK_COLOR="\033[38;2;255;20;147m"   # Rosa choque para a marca
 
-# ----------------------------- FUNÇÕES ESTÉTICAS --------------------------
+# ----------------------------- BANNER ORIGINAL PEEKSECURITY -------------
 banner() {
     clear
-    echo -e "${ORANGE}"
-    echo " ______      _     _     _               "
-    echo "|___  /     | |   (_)   | |              "
-    echo "   / / _ __ | |__  _ ___| |__   ___ _ __ "
-    echo "  / / | '_ \| '_ \| / __| '_ \ / _ \ '__|"
-    echo " / /__| |_) | | | | \__ \ | | |  __/ |   "
-    echo "/_____| .__/|_| |_|_|___/_| |_|\___|_|   "
-    echo "      | |                                "
-    echo "      |_|                ${GREEN}Version : 3.0${RESET}"
-    echo -e "${CYAN}[+] Laboratório de Pentest - Uso autorizado apenas${RESET}"
-    echo -e "${NEON_GREEN}════════════════════════════════════════════════════${RESET}\n"
+    echo -e "${PEEK_COLOR}"
+    echo "   ╔══════════════════════════════════════════════════════════╗"
+    echo "   ║  ██████  ███████ ██    ██  ██████ ██   ██ ██ ███████ ██   ║"
+    echo "   ║  ██   ██ ██      ██    ██ ██      ██   ██ ██ ██      ██   ║"
+    echo "   ║  ██████  █████   ██    ██ ██      ███████ ██ ███████ ██   ║"
+    echo "   ║  ██      ██       ██  ██  ██      ██   ██ ██      ██ ██   ║"
+    echo "   ║  ██      ███████   ████    ██████ ██   ██ ██ ███████ ██   ║"
+    echo "   ║                                                          ║"
+    echo "   ║     ${NEON_GREEN}PS-Phish v3.0${PEEK_COLOR} - Laboratório de Engenharia Social      ║"
+    echo "   ║            ${YELLOW}🛡️  PeekSecurity Team  🛡️${PEEK_COLOR}                      ║"
+    echo "   ╚══════════════════════════════════════════════════════════╝${RESET}"
+    echo -e "${CYAN}  ╭━┫ ${WHITE}Uso autorizado apenas em redes controladas${CYAN} ┣━╮${RESET}"
+    echo -e "${DIM}  └─────────────────────────────────────────────────────┘${RESET}\n"
 }
 
 small_banner() {
     clear
-    echo -e "${ORANGE}"
-    echo "  ░▀▀█░█▀█░█░█░▀█▀░█▀▀░█░█░█▀▀░█▀▄"
-    echo "  ░▄▀░░█▀▀░█▀█░░█░░▀▀█░█▀█░█▀▀░█▀▄"
-    echo "  ░▀▀▀░▀░░░▀░▀░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀░▀${GREEN} 3.0${RESET}"
-    echo ""
+    echo -e "${PEEK_COLOR}"
+    echo "   ╔══════════════════════════════════════╗"
+    echo "   ║  🧬 PS-PHISH | PeekSecurity Mode 🧬  ║"
+    echo "   ╚══════════════════════════════════════╝${RESET}\n"
 }
 
 # ----------------------------- UTILITÁRIOS ---------------------------------
