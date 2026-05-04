@@ -141,13 +141,19 @@ E os arquivos `.server/captures/ip_*.txt` e `creds_*.txt` mantêm o histórico.
 
 # ⚙️ Comandos Úteis
 
-Comando	Descrição
-./ps-phisher.sh	Inicia a ferramenta
-Ctrl + C	Para a execução e limpa processos
-cat .server/captures/ip_*.txt	Ver IPs capturados
-rm -rf .server/captures/*	Limpa todas as capturas
-🧪 Exemplo de Teste Rápido
-bash
+**Comando** **e** **Descrição**
+```
+./ps-phisher.sh                  Inicia a ferramenta
+
+Ctrl + C	                     Para a execução e limpa processos
+
+cat .server/captures/ip_*.txt	 Ver IPs capturados
+
+rm -rf .server/captures/*	     Limpa todas as capturas*
+```
+
+## 🧪 Exemplo de Teste Rápido
+```bash
 # Crie um template genérico
 mkdir -p .sites/teste
 cat > .sites/teste/index.html << EOF
@@ -161,16 +167,16 @@ EOF
 
 # Execute o script e escolha o template "teste"
 ./ps-phisher.sh
-🤝 Contribuição
+```
+
+## 🤝 Contribuição
 Sugestões e melhorias são bem-vindas! Abra uma issue ou envie um pull request.
 Mantenha o foco educacional e respeite os limites legais.
 
-📜 Licença
+## 📜 Licença
 Uso educacional e autorizado apenas.
 Este projeto não é licenciado para fins comerciais ou maliciosos.
 
-👾 PeekSecurity Team
-https://img.shields.io/badge/GitHub-PeekSecurity-181717?style=flat-square&logo=github
-https://img.shields.io/badge/Comunidade-Matrix-00FF00?style=flat-square&logo=matrix
+## 👾 PeekSecurity Team
 
-<p align="center"> <i>“Conhecimento não é crime – o crime é usá-lo sem ética.”</i><br> 🛡️ 🔐 🧬 </p> ```
+<p align="center"> <i>“Conhecimento não é crime – o crime é usá-lo sem ética.”</i><br> 🛡️ 🔐 🧬 </p>
