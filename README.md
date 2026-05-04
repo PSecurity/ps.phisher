@@ -1,5 +1,15 @@
 ## 🧬 PS-Phisher
 
+<p align="center">
+  <img src="https://img.shields.io/badge/version-3.2-purple?style=for-the-badge&logo=git">
+  <img src="https://img.shields.io/badge/platform-Termux%20%7C%20Android%20%7C%20Linux-green?style=for-the-badge&logo=android">
+  <img src="https://img.shields.io/badge/license-Educational%20Use-blue?style=for-the-badge">
+  <img src="https://img.shields.io/badge/language-Bash-red?style=for-the-badge&logo=gnu-bash">
+  <img src="https://img.shields.io/badge/php-8.x-777BB4?style=for-the-badge&logo=php">
+  <img src="https://img.shields.io/badge/tunnel-Cloudflared-orange?style=for-the-badge&logo=cloudflare">
+  <img src="https://img.shields.io/badge/category-Phishing%20Simulation-critical?style=for-the-badge&logo=hackaday">
+</p>
+
 **Ferramenta educacional para simulação de ataques de phishing e coleta de informações em ambiente controlado.**  
 Desenvolvida pela **PeekSecurity Team** para fins de treinamento, conscientização e testes autorizados.
 
