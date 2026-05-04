@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+
 # =====================================
 # PS.Thumbnails - PeekSecurity
 # Autor: Peek | @PeekSecurity
